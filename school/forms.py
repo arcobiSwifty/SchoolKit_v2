@@ -1,6 +1,7 @@
 from django import forms
 from .models import Nome
 from .models import Declina
+from .models import Declinazione
 
 class InserisciNome(forms.ModelForm):
 
@@ -13,3 +14,8 @@ class DeclinaNome(forms.ModelForm):
     class Meta:
         model = Declina
         fields = ('nome',)
+
+class DeclinazioneForm(forms.ModelForm):
+    class Meta:
+        model = Declinazione
+        fields = ('nominativosingolare', 'nominativoplurale', 'genitivosingolare', 'genitivoplurale', 'dativosingolare', 'dativoplurale', 'accusativosingolare', 'accusativoplurale', 'vocativosingolare', 'vocativoplurale', 'ablativosingolare', 'ablativoplurale')

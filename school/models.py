@@ -1,5 +1,8 @@
 from django.db import models
 from django.utils import timezone
+import json
+from django.db import models
+from django.core.serializers.json import DjangoJSONEncoder
 
 class JSONField(models.TextField):
 
@@ -73,7 +76,19 @@ class Nome(models.Model):
 class Declina(models.Model):
     nome = models.CharField(max_length=100)
 
-import json
+class Declinazione(models.Model):
+        nominativosingolare = models.CharField(max_length=100)
+        nominativoplurale = models.CharField(max_length=100)
+        genitivosingolare = models.CharField(max_length=100)
+        genitivoplurale = models.CharField(max_length=100)
+        dativosingolare = models.CharField(max_length=100)
+        dativoplurale = models.CharField(max_length=100)
+        accusativosingolare = models.CharField(max_length=100)
+        accusativoplurale = models.CharField(max_length=100)
+        vocativosingolare = models.CharField(max_length=100)
+        vocativoplurale = models.CharField(max_length=100)
+        ablativosingolare = models.CharField(max_length=100)
+        ablativoplurale = models.CharField(max_length=100)
 
-from django.db import models
-from django.core.serializers.json import DjangoJSONEncoder
+        def __str__(self):
+            return self.genitivosingolare
