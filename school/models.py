@@ -2,20 +2,6 @@ from django.db import models
 from django.utils import timezone
 
 class JSONField(models.TextField):
-    """
-    JSONField is a generic textfield that neatly serializes/unserializes
-    JSON objects seamlessly.
-    Django snippet #1478
-
-    example:
-        class Page(models.Model):
-            data = JSONField(blank=True, null=True)
-
-
-        page = Page.objects.get(pk=5)
-        page.data = {'title': 'test', 'type': 3}
-        page.save()
-    """
 
     def to_python(self, value):
         if value == "":
@@ -41,7 +27,7 @@ class JSONField(models.TextField):
 class Nome(models.Model):
 
     nome = models.CharField(max_length=100)
-
+    tema = models.CharField(max_length=100)
     declinazione = models.CharField(
         max_length=45,
         choices=(

@@ -58,22 +58,22 @@
           'nome': nomeImmesso
         },
         method: 'POST',
-        datatype: 'json',
+        datatype: 'html',
         success: function(data) {
           console.log(data);
-          var obj = JSON.parse(data);
-          document.getElementById('tablenomsing').innerHTML = obj.nominativosingolare
-          document.getElementById('tablenomplu').innerHTML = obj.nominativoplurale
-          document.getElementById('tablegensing').innerHTML = obj.genitivosingolare
-          document.getElementById('tablegenplu').innerHTML = obj.genitivoplurale
-          document.getElementById('tablevocsing').innerHTML = obj.dativosingolare
-          document.getElementById('tablevocplu').innerHTML = obj.dativoplurale
-          document.getElementById('tabledatsing').innerHTML = obj.accusativosingolare
-          document.getElementById('tabledatplu').innerHTML = obj.accusativoplurale
-          document.getElementById('tableaccsing').innerHTML = obj.vocativosingolare
-          document.getElementById('tableaccplu').innerHTML = obj.vocativoplurale
-          document.getElementById('tableablsing').innerHTML = obj.ablativosingolare
-          document.getElementById('tableablplu').innerHTML = obj.ablativoplurale
+          var obj = jQuery.parseJSON(JSON.stringify(data));
+          document.getElementById('tablenomsing').innerHTML = obj.nominativosingolare;
+          document.getElementById('tablenomplu').innerHTML = obj.nominativoplurale;
+          document.getElementById('tablegensing').innerHTML = obj.genitivosingolare;
+          document.getElementById('tablegenplu').innerHTML = obj.genitivoplurale;
+          document.getElementById('tablevocsing').innerHTML = obj.dativosingolare;
+          document.getElementById('tablevocplu').innerHTML = obj.dativoplurale;
+          document.getElementById('tabledatsing').innerHTML = obj.accusativosingolare;
+          document.getElementById('tabledatplu').innerHTML = obj.accusativoplurale;
+          document.getElementById('tableaccsing').innerHTML = obj.vocativosingolare;
+          document.getElementById('tableaccplu').innerHTML = obj.vocativoplurale;
+          document.getElementById('tableablsing').innerHTML = obj.ablativosingolare;
+          document.getElementById('tableablplu').innerHTML = obj.ablativoplurale;
         }
       });
     };

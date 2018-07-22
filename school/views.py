@@ -72,7 +72,7 @@ def makeJsonFromData(declinazioneOconiugazione, nome):
 
 def declina_nome(nome, declinazione):
     if declinazione == 'prima declinazione (ae)':
-        declinaPrimaDeclinazione(nome, 'ros') #temporaneo
+        declinaPrimaDeclinazione(nome, Nome.objects.get(nome=nome).tema) 
 
 
 def coniuga(verbo, coniugazione):
