@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <form method="post" class="declinapost">{% csrf_token %}
+    {{  form.as_p }}
+  </form>
+  <div id="jsonresponsedata">
+  </div>
+  <button onclick="declina()">Declina</button>
+  <table>
+    <tr><td id='tablenomsing'></td><td id='tablenomplu'></td></tr>
+    <tr><td id='tablegensing'></td><td id='tablegenplu'></td></tr>
+    <tr><td id='tabledatsing'></td><td id='tabledatplu'></td></tr>
+    <tr><td id='tableaccsing'></td><td id='tableaccplu'></td></tr>
+    <tr><td id='tablevocsing'></td><td id='tablevocplu'></td></tr>
+    <tr><td id='tableablsing'></td><td id='tableablplu'></td></tr>
+  </table>
+{% endblock %}
+{% block javascript %}
+  <script>
+  function getCookie(name) {var cookieValue = null;if (document.cookie && document.cookie != '') {var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {var cookie = jQuery.trim(cookies[i]);if (cookie.substring(0, name.length + 1) == (name + '=')) {
+          cookieValue =   decodeURIComponent(cookie.substring(name.length + 1));break;}}}return cookieValue;}
+  var csrftoken = getCookie('csrftoken');function csrfSafeMethod(method) {return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));}
+
+      $('#id_nome').change(function() {
+      var nomeImmesso = $(this).val();
+      var csrftoken = getCookie('csrftoken');
+
+      $.ajax({
+        beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+          xhr.setRequestHeader("X-CSRFToken", csrftoken);
+          }
+        },
+        url: '/verificaNome/',
+        data: {
+          'nome': nomeImmesso
+        },
+        method: 'POST',
+        datatype: 'json',
+        success: function(data) {
+          if (data.exists) {
+            document.getElementById('jsonresponsedata').innerHTML = 'exists';
+          } else {
+            document.getElementById('jsonresponsedata').innerHTML = "doesn't exists";
+          }
+        }
+      });
+    });
+    function declina(){
+      var nomeImmesso = $('#id_nome').val();
+      var csrftoken = getCookie('csrftoken');
+      $.ajax({
+        beforeSend: function(xhr, settings) {if (!csrfSafeMethod(settings.type) && !this.crossDomain) {xhr.setRequestHeader("X-CSRFToken", csrftoken);}},
+        url: '/declinaNome/',
+        data: {
+          'nome': nomeImmesso
+        },
+        method: 'POST',
+        datatype: 'json',
+        success: function(data) {
+          console.log(data);
+          var obj = JSON.parse(data);
+          document.getElementById('tablenomsing').innerHTML = obj.nominativosingolare
+          document.getElementById('tablenomplu').innerHTML = obj.nominativoplurale
+          document.getElementById('tablegensing').innerHTML = obj.genitivosingolare
+          document.getElementById('tablegenplu').innerHTML = obj.genitivoplurale
+          document.getElementById('tablevocsing').innerHTML = obj.dativosingolare
+          document.getElementById('tablevocplu').innerHTML = obj.dativoplurale
+          document.getElementById('tabledatsing').innerHTML = obj.accusativosingolare
+          document.getElementById('tabledatplu').innerHTML = obj.accusativoplurale
+          document.getElementById('tableaccsing').innerHTML = obj.vocativosingolare
+          document.getElementById('tableaccplu').innerHTML = obj.vocativoplurale
+          document.getElementById('tableablsing').innerHTML = obj.ablativosingolare
+          document.getElementById('tableablplu').innerHTML = obj.ablativoplurale
+        }
+      });
+    };
+  </script>
+{% endblock %}
