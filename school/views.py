@@ -8,6 +8,7 @@ from django.http import JsonResponse
 from django.http import HttpResponse
 from django.template.context_processors import csrf
 from .models import Nome
+from .models import Declinazione
 
 
 def homePage(request):
@@ -19,7 +20,7 @@ def aggiungiNome(request):
         form = InserisciNome(request.POST)
         if form.is_valid():
             nome = form.save(commit=False)
-            jsonForm = makeJsonFromData(nome.declinazione, nome.nome)
+            jsonForm = makeJsonFromData(nome.declinazione, nome.nome, nome.tema)
             jsonForm['significato'] = nome.significato
             nome.jsonResponse = jsonForm
             nome.save()
@@ -46,9 +47,9 @@ def declinaNome(request):
     mionome = request.POST.get('nome', None)
     return JsonResponse(Nome.objects.get(nome=mionome).jsonResponse, safe=False)
 
-def makeJsonFromData(declinazioneOconiugazione, nome):
+def makeJsonFromData(declinazioneOconiugazione, nome, tema):
     if declinazioneOconiugazione == 'prima declinazione (ae)':
-        return declinaPrimaDeclinazione(nome, 'ros')
+        return declina_nome(nome, tema, 'primadeclinazione')
     if declinazioneOconiugazione == 'Dseconda':
         return
     if declinazioneOconiugazione == 'Dterza':
@@ -70,9 +71,6 @@ def makeJsonFromData(declinazioneOconiugazione, nome):
     if declinazioneOconiugazione == 'invariabile':
         return
 
-def declina_nome(nome, declinazione):
-    if declinazione == 'prima declinazione (ae)':
-        declinaPrimaDeclinazione(nome, Nome.objects.get(nome=nome).tema) 
 
 
 def coniuga(verbo, coniugazione):
@@ -80,37 +78,26 @@ def coniuga(verbo, coniugazione):
 
     return declinazione
 
-def declinaPrimaDeclinazione(nome, tema):
-    desinenzaNominativoSingolare = 'a'
-    desinenzaNominativoPlurale = 'ae'
-    desinenzaGenitivoSingolare = 'ae'
-    desinenzaGenitivoPlurale = 'arum'
-    desinenzaDativoSingolare = 'ae'
-    desinenzaDativoPlurale = 'is'
-    desinenzaAccusativoSingolare = 'am'
-    desinenzaAccusativoPlurale = 'as'
-    desinenzaVocativoSingolare = 'a'
-    desinenzaVocativoPlurale = 'ae'
-    desinenzaAblativoSingolare = 'a'
-    desinenzaAblativoPlurale = 'is'
+def declina_nome(nome, tema, declinazione):
+    #takes: 'nome (nominativo singolare), tema e declinazione e restituisci un jsonresponse'
+    declinazione = Declinazione.objects.get(nome=declinazione)
     jsonResponse = {
         'significato': '',
         'nome': nome,
         'is_nome': 'true',
         'declinazione': 'prima',
-        'nominativosingolare': str(tema + desinenzaNominativoSingolare),
-        'nominativoplurale': str(tema + desinenzaNominativoPlurale),
-        'genitivosingolare': str(tema + desinenzaGenitivoSingolare),
-        'genitivoplurale': str(tema + desinenzaGenitivoPlurale),
-        'dativosingolare': str(tema + desinenzaGenitivoSingolare),
-        'dativoplurale': str(tema + desinenzaGenitivoPlurale),
-        'accusativosingolare': str(tema + desinenzaAccusativoSingolare),
-        'accusativoplurale': str(tema + desinenzaAccusativoPlurale),
-        'vocativosingolare': str(tema + desinenzaVocativoSingolare),
-        'vocativoplurale': str(tema + desinenzaVocativoPlurale),
-        'ablativosingolare': str(tema + desinenzaAblativoSingolare),
-        'ablativoplurale': str(tema + desinenzaAblativoPlurale),
-        'significato': '',
+        'nominativosingolare': str(nome),
+        'nominativoplurale': str(tema + declinazione.nominativoplurale),
+        'genitivosingolare': str(tema + declinazione.genitivosingolare),
+        'genitivoplurale': str(tema + declinazione.genitivoplurale),
+        'dativosingolare': str(tema + declinazione.dativosingolare),
+        'dativoplurale': str(tema + declinazione.dativoplurale),
+        'accusativosingolare': str(tema + declinazione.accusativosingolare),
+        'accusativoplurale': str(tema + declinazione.accusativoplurale),
+        'vocativosingolare': str(tema + declinazione.vocativosingolare),
+        'vocativoplurale': str(tema + declinazione.vocativoplurale),
+        'ablativosingolare': str(tema + declinazione.ablativosingolare),
+        'ablativoplurale': str(tema + declinazione.ablativoplurale),
 
         'is_verbo': 'false',
         'primasingolare': '',

@@ -77,6 +77,7 @@ class Declina(models.Model):
     nome = models.CharField(max_length=100)
 
 class Declinazione(models.Model):
+        nome = models.CharField(max_length=100)
         nominativosingolare = models.CharField(max_length=100)
         nominativoplurale = models.CharField(max_length=100)
         genitivosingolare = models.CharField(max_length=100)
