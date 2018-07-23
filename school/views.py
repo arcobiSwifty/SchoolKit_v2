@@ -48,10 +48,16 @@ def declinaNome(request):
     return JsonResponse(Nome.objects.get(nome=mionome).jsonResponse, safe=False)
 
 def makeJsonFromData(declinazioneOconiugazione, nome, tema):
+    sostantivo = Nome.objects.get(nome=nome)
+    genere = sostantivo.genere
     if declinazioneOconiugazione == 'prima declinazione (ae)':
-        return declina_nome(nome, tema, 'primadeclinazione')
+        if genere == 'femminile' | genere == 'maschile' | genere == 'neutro':
+            return declina_nome(nome, tema, 'primadeclinazione')
     if declinazioneOconiugazione == 'seconda declinazione (i)':
-        return declina_nome(nome, tema, 'secondadeclinazione')
+        if genere == 'femminile' | genere == 'maschile':
+            return declina_nome(nome, tema, 'secondadeclinazione')
+        else:
+            return declina_nome_neutro(nome, tema, 'secondadeclinazione')
     if declinazioneOconiugazione == 'Dterza':
         return
     if declinazioneOconiugazione == 'Dquarta':
@@ -115,3 +121,41 @@ def declina_nome(nome, tema, declinazione):
         }
     print(jsonResponse)
     return jsonResponse
+
+def declina_nome_neutro(nome, tema, declinazione):
+        #takes: 'nome (nominativo singolare), tema e declinazione e restituisci un jsonresponse'
+        declinazione = Declinazione.objects.get(nome=declinazione)
+        jsonResponse = {
+            'significato': '',
+            'nome': nome,
+            'is_nome': 'true',
+            'declinazione': 'prima',
+            'nominativosingolare': str(nome),
+            'nominativoplurale': str(tema + declinazione.nominativopluraleNeutro),
+            'genitivosingolare': str(tema + declinazione.genitivosingolareNeutro),
+            'genitivoplurale': str(tema + declinazione.genitivopluraleNeutro),
+            'dativosingolare': str(tema + declinazione.dativosingolareNeutro),
+            'dativoplurale': str(tema + declinazione.dativopluraleNeutro),
+            'accusativosingolare': str(tema + declinazione.accusativosingolareNeutro),
+            'accusativoplurale': str(tema + declinazione.accusativopluraleNeutro),
+            'vocativosingolare': str(tema + declinazione.vocativosingolareNeutro),
+            'vocativoplurale': str(tema + declinazione.vocativopluraleNeutro),
+            'ablativosingolare': str(tema + declinazione.ablativosingolareNeutro),
+            'ablativoplurale': str(tema + declinazione.ablativopluraleNeutro),
+
+            'is_verbo': 'false',
+            'primasingolare': '',
+            'secondasingolare': '',
+            'terzasingolare': '',
+            'primaplurale': '',
+            'secondaplurale': '',
+            'terzaplurale': '',
+
+            'is_aggettivo': 'false',
+
+            'is_avverbio': 'false',
+            'avverbio': '',
+            'particolarita': 'false',
+            }
+        print(jsonResponse)
+        return jsonResponse
