@@ -45,6 +45,21 @@ def controllaNome(request):
 
 def declinaNome(request):
     mionome = request.POST.get('nome', None)
+    try:
+        obj = Nome.objects.get(nome=mionome)
+        return JsonResponse(obj.jsonResponse, safe=False)
+    except:
+        print('name is not a (nominativo singolare). ')
+        tema = mionome[:-2]
+        try:
+            obj = Nome.objects.get(tema=tema)
+            return JsonResponse(obj.jsonResponse, safe=False)
+        except:
+            tema = mionome[:-2]
+            print('tema')
+            obj = Nome.objects.get(tema=tema)
+            return JsonResponse(obj.jsonResponse, safe=False)
+
     return JsonResponse(Nome.objects.get(nome=mionome).jsonResponse, safe=False)
 
 def makeJsonFromData(declinazioneOconiugazione, nome, tema):
@@ -58,8 +73,11 @@ def makeJsonFromData(declinazioneOconiugazione, nome, tema):
             return declina_nome(nome, tema, 'secondadeclinazione')
         else:
             return declina_nome_neutro(nome, tema, 'secondadeclinazione')
-    if declinazioneOconiugazione == 'Dterza':
-        return
+    if declinazioneOconiugazione == 'terza declinazione (is)':
+        if genere == 'femminile' | genere == 'maschile':
+            return declina_nome(nome, tema, 'terzadeclinazione')
+        else:
+            return declina_nome_neutro(nome, tema, 'terzadeclinazione')
     if declinazioneOconiugazione == 'Dquarta':
         return
     if declinazioneOconiugazione == 'Dquinta':
@@ -123,7 +141,7 @@ def declina_nome(nome, tema, declinazione):
     return jsonResponse
 
 def declina_nome_neutro(nome, tema, declinazione):
-        #takes: 'nome (nominativo singolare), tema e declinazione e restituisci un jsonresponse'
+        #prende: 'nome (nominativo singolare), tema e declinazione e restituisce: jsonresponse'
         declinazione = Declinazione.objects.get(nome=declinazione)
         jsonResponse = {
             'significato': '',
