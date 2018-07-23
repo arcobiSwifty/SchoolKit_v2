@@ -50,8 +50,8 @@ def declinaNome(request):
 def makeJsonFromData(declinazioneOconiugazione, nome, tema):
     if declinazioneOconiugazione == 'prima declinazione (ae)':
         return declina_nome(nome, tema, 'primadeclinazione')
-    if declinazioneOconiugazione == 'Dseconda':
-        return
+    if declinazioneOconiugazione == 'seconda declinazione (i)':
+        return declina_nome(nome, tema, 'secondadeclinazione')
     if declinazioneOconiugazione == 'Dterza':
         return
     if declinazioneOconiugazione == 'Dquarta':
@@ -106,6 +106,8 @@ def declina_nome(nome, tema, declinazione):
         'primaplurale': '',
         'secondaplurale': '',
         'terzaplurale': '',
+
+        'is_aggettivo': 'false',
 
         'is_avverbio': 'false',
         'avverbio': '',

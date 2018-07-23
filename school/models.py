@@ -31,6 +31,15 @@ class Nome(models.Model):
 
     nome = models.CharField(max_length=100)
     tema = models.CharField(max_length=100)
+    genere = models.CharField(
+        max_length=50,
+        choices = [
+            ('maschile', 'maschile'),
+            ('femminile', 'femminile'),
+            ('neutro', 'neutro'),
+        ],
+        default='femminile'
+    )
     declinazione = models.CharField(
         max_length=45,
         choices=(
@@ -90,6 +99,19 @@ class Declinazione(models.Model):
         vocativoplurale = models.CharField(max_length=100)
         ablativosingolare = models.CharField(max_length=100)
         ablativoplurale = models.CharField(max_length=100)
+
+        nominativosingolareNeutro = models.CharField(max_length=100)
+        nominativopluraleNeutro = models.CharField(max_length=100)
+        genitivosingolareNeutro = models.CharField(max_length=100)
+        genitivopluraleNeutro = models.CharField(max_length=100)
+        dativosingolareNeutro = models.CharField(max_length=100)
+        dativopluraleNeutro = models.CharField(max_length=100)
+        accusativosingolareNeutro = models.CharField(max_length=100)
+        accusativopluraleNeutro = models.CharField(max_length=100)
+        vocativosingolareNeutro = models.CharField(max_length=100)
+        vocativopluraleNeutro = models.CharField(max_length=100)
+        ablativosingolareNeutro = models.CharField(max_length=100)
+        ablativopluraleNeutro = models.CharField(max_length=100)
 
         def __str__(self):
             return self.genitivosingolare

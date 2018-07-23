@@ -18,4 +18,5 @@ class DeclinaNome(forms.ModelForm):
 class DeclinazioneForm(forms.ModelForm):
     class Meta:
         model = Declinazione
-        fields = ('nominativosingolare', 'nominativoplurale', 'genitivosingolare', 'genitivoplurale', 'dativosingolare', 'dativoplurale', 'accusativosingolare', 'accusativoplurale', 'vocativosingolare', 'vocativoplurale', 'ablativosingolare', 'ablativoplurale')
+        fields = ('nominativosingolare', 'nominativoplurale', 'genitivosingolare', 'genitivoplurale', 'dativosingolare', 'dativoplurale', 'accusativosingolare', 'accusativoplurale', 'vocativosingolare', 'vocativoplurale', 'ablativosingolare', 'ablativoplurale',
+                'nominativosingolareNeutro', 'nominativopluraleNeutro', 'genitivosingolareNeutro', 'genitivopluraleNeutro', 'dativosingolareNeutro', 'dativopluraleNeutro', 'accusativosingolareNeutro', 'accusativopluraleNeutro', 'vocativosingolareNeutro', 'vocativopluraleNeutro', 'ablativosingolareNeutro', 'ablativopluraleNeutro')
