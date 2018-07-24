@@ -55,7 +55,7 @@ def declinaNome(request):
             obj = Nome.objects.get(tema=tema)
             return JsonResponse(obj.jsonResponse, safe=False)
         except:
-            tema = mionome[:-2]
+            tema = mionome[:-1]
             print('tema')
             obj = Nome.objects.get(tema=tema)
             return JsonResponse(obj.jsonResponse, safe=False)
