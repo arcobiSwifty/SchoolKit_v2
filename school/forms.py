@@ -7,7 +7,7 @@ class InserisciNome(forms.ModelForm):
 
     class Meta:
         model = Nome
-        fields = ('nome', 'tema', 'declinazione', 'significato', 'particolarita')
+        fields = ('nome', 'tema', 'genere', 'declinazione', 'significato', 'particolarita')
 
 class DeclinaNome(forms.ModelForm):
 

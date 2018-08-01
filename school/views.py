@@ -19,8 +19,8 @@ def aggiungiNome(request):
     if request.method == 'POST':
         form = InserisciNome(request.POST)
         if form.is_valid():
-            nome = form.save(commit=False)
-            jsonForm = makeJsonFromData(nome.declinazione, nome.nome, nome.tema)
+            nome = form.save()
+            jsonForm = makeJsonFromData(nome.declinazione, nome.nome, nome.tema, nome.genere)
             jsonForm['significato'] = nome.significato
             nome.jsonResponse = jsonForm
             nome.save()
@@ -50,43 +50,52 @@ def declinaNome(request):
         return JsonResponse(obj.jsonResponse, safe=False)
     except:
         print('name is not a (nominativo singolare). ')
-        tema = mionome[:-2]
-        try:
-            obj = Nome.objects.get(tema=tema)
-            return JsonResponse(obj.jsonResponse, safe=False)
-        except:
-            tema = mionome[:-1]
-            print('tema')
-            obj = Nome.objects.get(tema=tema)
-            return JsonResponse(obj.jsonResponse, safe=False)
 
+    try:
+        tema = mionome[:-2]
+        obj = Nome.objects.get(tema=tema)
+        return JsonResponse(obj.jsonResponse, safe=False)
+    except:
+        print('continuing looking for tema')
+    try:
+        tema = mionome[:-1]
+        obj = Nome.objects.get(tema=tema)
+        return JsonResponse(obj.jsonResponse, safe=False)
+    except:
+        print('continuing looking for tema ')
+    try:
+        tema = mionome[:-3]
+        obj = Nome.objects.get(tema=tema)
+        return JsonResponse(obj.jsonResponse, safe=False)
+    except:
+        print('continuing looking for tema')
     return JsonResponse(Nome.objects.get(nome=mionome).jsonResponse, safe=False)
 
-def makeJsonFromData(declinazioneOconiugazione, nome, tema):
-    sostantivo = Nome.objects.get(nome=nome)
-    genere = sostantivo.genere
+def makeJsonFromData(declinazioneOconiugazione, nome, tema, genere):
+
     if declinazioneOconiugazione == 'prima declinazione (ae)':
-        if genere == 'femminile' | genere == 'maschile' | genere == 'neutro':
-            return declina_nome(nome, tema, 'primadeclinazione')
+        return declina_nome(nome, tema, 'primadeclinazione')
     if declinazioneOconiugazione == 'seconda declinazione (i)':
-        if genere == 'femminile' | genere == 'maschile':
+        if genere == 'femminile':
             return declina_nome(nome, tema, 'secondadeclinazione')
-        else:
+        if genere == 'maschile':
+            return declina_nome(nome, tema, 'secondadeclinazione')
+        if genere == 'neutro':
             return declina_nome_neutro(nome, tema, 'secondadeclinazione')
-    if declinazioneOconiugazione == 'terza declinazione (is)':
+    if declinazioneOconiugazione == 'terza declinazione (is)': #fix
         if genere == 'femminile' | genere == 'maschile':
             return declina_nome(nome, tema, 'terzadeclinazione')
         else:
             return declina_nome_neutro(nome, tema, 'terzadeclinazione')
-    if declinazioneOconiugazione == 'Dquarta':
+    if declinazioneOconiugazione == 'quartadeclinazione':
         return
-    if declinazioneOconiugazione == 'Dquinta':
+    if declinazioneOconiugazione == 'quintadeclinazione':
         return
-    if declinazioneOconiugazione == 'Cprima':
+    if declinazioneOconiugazione == 'primaconiugazione':
         return
-    if declinazioneOconiugazione == 'Cseconda':
+    if declinazioneOconiugazione == 'secondaconiugazione':
         return
-    if declinazioneOconiugazione == 'Cterza':
+    if declinazioneOconiugazione == 'terzaconiugazione':
         return
     if declinazioneOconiugazione == 'Cquarta':
         return

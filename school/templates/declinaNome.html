@@ -7,7 +7,8 @@
   <div id="jsonresponsedata">
   </div>
   <button onclick="declina()">Declina</button>
-  <table>
+  <table class="table">
+    <h6 id='tablesignificato'></h6>
     <tr><td id='tablenomsing'></td><td id='tablenomplu'></td></tr>
     <tr><td id='tablegensing'></td><td id='tablegenplu'></td></tr>
     <tr><td id='tabledatsing'></td><td id='tabledatplu'></td></tr>
@@ -61,8 +62,9 @@
         method: 'POST',
         datatype: 'html',
         success: function(data) {
-          console.log(data);
           var obj = jQuery.parseJSON(JSON.stringify(data));
+          console.log(obj);
+          document.getElementById('tablesignificato').innerHTML = obj.significato;
           document.getElementById('tablenomsing').innerHTML = obj.nominativosingolare;
           document.getElementById('tablenomplu').innerHTML = obj.nominativoplurale;
           document.getElementById('tablegensing').innerHTML = obj.genitivosingolare;
