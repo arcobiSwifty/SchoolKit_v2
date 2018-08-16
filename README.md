@@ -1,17 +1,17 @@
 # Schoolkit
 
-##Latino
+## Latino
 
-###Traduttore
+### Traduttore
 
-###Declinatore
+### Declinatore
 
-###PDF
+### PDF
 
-##Storia
+## Storia
 
-###PDF
+###P DF
 
-#Matematica
+# Matematica
 
-*(?)
+* (?) *
